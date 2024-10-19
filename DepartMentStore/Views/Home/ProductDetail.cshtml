@@ -1,0 +1,162 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model DepartMentStore.Models.Product
+<!-- breadcrumb-section -->
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>See more Details</p>
+                    <h1>Single Product</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end breadcrumb section -->
+<!-- single product -->
+<div class="single-product mt-150 mb-150">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                @if (!string.IsNullOrEmpty(Model.IsOnSale.ToString()))
+                {
+                    if (Model.IsOnSale == true)
+                    {
+                        <div class="discount-label">
+                            @Model.DiscountPercentage%
+                        </div>
+                    }
+                }
+                <div class="single-product-img">
+                    <img src="@Model.Image" alt="">
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="single-product-content">
+                    <h3>@Model.Name</h3>
+                    <p class="single-product-pricing">
+                        <span>per kg</span>
+                        @if (Model.IsOnSale != null)
+                         {
+                            if ((bool)Model.IsOnSale == true)
+                            {
+                                var DiscountPrice = Model.Price - Model.Price * (Model.DiscountPercentage / 100);
+                                <span class="original-price">@String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", Model.Price)</span>
+                                @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", DiscountPrice)
+                            }
+                            else
+                            {
+                                @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", Model.Price)
+                            }
+                         }
+                        else
+                        {
+                            @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", Model.Price)
+                        }
+                    </p>
+                    <p>@Model.Description</p>
+                    <div class="single-product-form">
+                        <form action="index.html">
+                            <input type="number" id="quantity" value="1" min="1" placeholder="0">
+                        </form>
+                        @*<button onclick="addToCart(@Model.Product_Id)">Add to Cart</button>*@
+                        <a onclick="addToCart(@Model.Product_Id,quantity)" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                        <p><strong>Categories: </strong>@Model.Category.Name</p>
+                    </div>
+                    <h4>Share:</h4>
+                    <ul class="product-share">
+                        <li><a href=""><i class="fab fa-facebook-f"></i></a></li>
+                        <li><a href=""><i class="fab fa-twitter"></i></a></li>
+                        <li><a href=""><i class="fab fa-google-plus-g"></i></a></li>
+                        <li><a href=""><i class="fab fa-linkedin"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end single product -->
+<!--comment-->
+<div class="container">
+    <div class="comment-template">
+        <h4>Leave a comment</h4>
+        <p>If you have a comment dont feel hesitate to send us your opinion.</p>
+        <form id="commentForm" method="post">
+            <p>
+                @*<textarea name="comment" id="comment" cols="10" rows="5" placeholder="Your Message"></textarea>*@
+                <input type="text" id="commentContent" placeholder="Leave a comment">
+                <input type="hidden"  id="ProductId" value="@Model.Product_Id" />
+            </p>
+            <p><input type="submit" value="Submit"></p>
+        </form>
+    </div>
+    <div class="comments-list-wrap">
+        <h3 class="comment-count-title">Comments</h3>
+
+        <div id="comment-list" class="comment-list">
+            @foreach(var item in Model.Comments)
+             {
+                <div class="single-comment-body">
+                    <div class="comment-user-avater">
+                        <img src="@item.User.Avartar" alt="">
+                    </div>
+                    <div class="comment-text-body">
+                        <h4>@item.User.Name  <span class="comment-date">@item.DateCreate</span></h4>
+                        <p>@item.Content</p>
+                    </div>
+                </div>
+             }    
+        </div>
+    </div>
+
+
+</div>
+<!--end comment-->
+<!-- more products -->
+<div class="more-products mb-150">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="section-title">
+                    <h3><span class="orange-text">Related</span> Products</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, fuga quas itaque eveniet beatae optio.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 text-center">
+                <div class="single-product-item">
+                    <div class="product-image">
+                        <a href="single-product.html"><img src="assets/img/products/product-img-1.jpg" alt=""></a>
+                    </div>
+                    <h3>Strawberry</h3>
+                    <p class="product-price"><span>Per Kg</span> 85$ </p>
+                    <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 text-center">
+                <div class="single-product-item">
+                    <div class="product-image">
+                        <a href="single-product.html"><img src="assets/img/products/product-img-2.jpg" alt=""></a>
+                    </div>
+                    <h3>Berry</h3>
+                    <p class="product-price"><span>Per Kg</span> 70$ </p>
+                    <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 offset-lg-0 offset-md-3 text-center">
+                <div class="single-product-item">
+                    <div class="product-image">
+                        <a href="single-product.html"><img src="assets/img/products/product-img-3.jpg" alt=""></a>
+                    </div>
+                    <h3>Lemon</h3>
+                    <p class="product-price"><span>Per Kg</span> 35$ </p>
+                    <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

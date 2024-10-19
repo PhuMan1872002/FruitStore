@@ -1,0 +1,110 @@
+﻿@*@{
+        ViewBag.Title = "Index";
+        Layout = "~/Views/Shared/LayoutCashier.cshtml";
+    }
+
+    ﻿@model IEnumerable<DepartMentStore.Models.Product>
+    <div class="main-content">
+        <div class="menu-category">
+            <h2>Menu Category</h2>
+            <div class="category-list scrollable">
+                @{
+                    DepartMentStore.Models.DepartmentStoreEntities da = new DepartMentStore.Models.DepartmentStoreEntities();
+                    var Category = da.Categories.ToList();
+                    foreach (var item in Category)
+                    {
+                        <div class="category-item">@item.Name</div>
+                    }
+                }
+            </div>
+            <input type="text" placeholder="Search food, coffee, etc...">
+        </div>
+        <div class="choose-order-container">
+            <div class="choose-order">
+                <h2>Choose Order</h2>
+                <div class="product-list scrollable">
+                    @foreach (var item in Model)
+                    {
+                        <div class="product">
+                            <img src="@item.Image" alt="Image of @item.Name" onclick="addToCart(@item.Product_Id)">
+                            <p>@item.Name</p>
+                            <span>@item.Price</span>
+                        </div>
+                    }
+                </div>
+            </div>
+
+    </div>*@
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/LayoutCashier.cshtml";
+}
+@model DepartMentStore.Models.ProductCart
+<div class="main-content">
+    <div class="menu-category">
+        <h2>Menu Category</h2>
+        <div class="category-list scrollable">
+            
+            @{
+                DepartMentStore.Models.DepartmentStoreEntities da = new DepartMentStore.Models.DepartmentStoreEntities();
+                var Category = da.Categories.ToList();
+                foreach (var item in Category)
+                {
+                    <div class="category-item">@item.Name</div>
+                }
+            }
+        </div>
+        <input type="text" name="searchString" placeholder="Search food, coffee, etc...">
+    </div>
+    <div class="choose-order-container">
+        <div class="choose-order">
+            <h2>Choose Order</h2>
+            <div class="product-list scrollable">
+                @foreach (var item in Model.Products)
+                 {
+                    
+                    <div class="product">
+                        <img src="@item.Image" alt="Image of @item.Name" onclick="addToCart(@item.Product_Id)">
+                        
+                        <p>@item.Name</p>
+                        @if(!string.IsNullOrEmpty(item.IsOnSale.ToString()))
+                         {
+                            if (item.IsOnSale == true)
+                            {
+                                <div class="discount-ribbon">
+                                    @item.DiscountPercentage%
+                                </div>
+                            }
+                         }
+                        @if (item.IsOnSale != null)
+                         {
+                            if ((bool)item.IsOnSale == true)
+                            {
+                                var DiscountPrice = item.Price - item.Price * (@item.DiscountPercentage / 100);
+                                @*<span class="original-price" style="text-decoration: line-through;">
+                                
+                                    @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", @item.Price)
+                                </span>*@
+                                <span class="discounted-price">
+                                
+                                    @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", DiscountPrice)
+                                </span>
+                             }
+                         }
+                        else
+                        {
+                            <span class="price">
+                                @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", @item.Price)
+                            </span>
+                        }
+                      
+                    </div>
+                 }
+              
+
+            </div>
+        </div>
+
+    </div>
+</div>
+

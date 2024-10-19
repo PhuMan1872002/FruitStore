@@ -1,0 +1,27 @@
+﻿
+
+@{
+    ViewBag.Title = "CreateCate";
+    Layout = "~/Views/Shared/LayoutCreateProduct.cshtml";
+}
+
+<div class="container">
+    <div class="title">Thêm loại sản phẩm</div>
+
+    <form action="/Admin/CreateCate" method="post" new { enctype="multipart/form-data" }>
+    
+
+        <div class="user__details">
+            <div class="input__box">
+                <span class="details"> Tên loại</span>
+                <input type="text" name="TenLoai" placeholder="Tên loại" required>
+            </div>
+            <div class="clearfix"></div>
+            <div></div>
+            <div class="button-container">
+                <input type="submit" value="Save" class="button-save">
+            </div>
+        </div>
+    </form>
+
+</div>

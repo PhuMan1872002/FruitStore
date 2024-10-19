@@ -1,0 +1,159 @@
+﻿﻿@model IEnumerable<DepartMentStore.Models.Product>
+@{
+    ViewBag.Title = "ListProducts";
+    Layout = "~/Views/Shared/LayoutAdmin.cshtml";
+}
+<head>
+    <style>
+        <style >
+        .table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .table th, .table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            line-height: 1.5;
+        }
+
+        .table tr:hover {
+            background-color: #f5f5f5;
+        }
+        .table th {
+            background-color: #f8f8f8; /* Màu nền cho tiêu đề bảng */
+        }
+
+        /* Điều chỉnh kích thước của cột Mã sản phẩm */
+        .table th:first-child,
+        .table td:first-child {
+            width: 10%;
+        }
+
+        /* Điều chỉnh kích thước của cột nút button */
+        .btn {
+            padding: 5px 8px; /* Adjust padding of the button */
+            font-size: 11px; /* Adjust font size of the button */
+            margin-bottom: 5px;
+            border-radius: 5px;
+            display: inline-block; /* Make the buttons inline-block */
+            width: 70px; /* Set a fixed width for both buttons */
+            height:30px;
+            text-align: center; /* Center the text horizontally */
+        }
+
+        .edit-btn {
+            background-color: blue;
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: red;
+            color: white;
+        }
+
+        .btn a {
+            text-decoration: none;
+            color: white;
+            display: inline-block; /* Ensure <a> tag takes up the full width of the button */
+            width: 100%; /* Ensure the <a> tag takes up the full width of the button */
+        }
+        .CanGiua{
+            margin-left:40px;
+        }
+    </style>
+
+    </style>
+</head>
+<table class="table CanGiua">
+
+    <tr>
+
+        <th>
+            Mã SP
+        </th>
+        <th>
+            Tên SP
+        </th>
+        <th>
+            Giá bán
+        </th>
+        <th>
+            Ảnh SP
+        </th>
+        <th>
+            Số lượng
+        </th>
+        <th>
+            Loại Sản Phẩm
+        </th>
+        <th>
+            Giảm giá
+        </th>
+        <th>
+            Mô tả
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product_Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.Price)*@
+                @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", @item.Price)
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.AnhSP)*@
+                <img src="@item.Image" alt="Hinh san pham" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.DiscountPercentage)
+                 @if(item.IsOnSale==true)
+                  {
+                     <span>%</span>
+                  }
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+             <td>
+                 <button class="btn edit-btn">
+                     <a href="@Url.Action("EditProduct", "Admin", new { id = item.Product_Id })"> Edit</a>
+                 </button>
+                 <button class="btn delete-btn">
+                     <a href="@Url.Action("DeleteProduct", "Admin", new { id = item.Product_Id })"> Delete</a>
+                 </button>
+                 <button class="btn btn-success">
+                     <a href="@Url.Action("CreateDiscountForProduct", "Admin", new { id = item.Product_Id })"> Discount</a>
+                 </button>
+             </td>
+        </tr>
+    }
+    <tr>
+        <td>
+            <button class="btn btn-block btn-lg btn-gradient-primary mt-4">
+                <a href="@Url.Action("CreateProduct", "Admin")"> Add</a>
+               
+            </button>
+        </td>
+    </tr>
+</table>
+
+
+
+

@@ -1,0 +1,312 @@
+﻿@{
+    Layout = null;
+    var cart = ViewData["Cart"] as DepartMentStore.Models.Cart;
+}
+@model DepartMentStore.Models.ProductCart
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Order Dashboard</title>
+    <link rel="stylesheet" href="~/Template/assets/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        .product {
+            position: relative;
+            display: inline-block;
+        }
+
+        .discount-ribbon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: red;
+    color: white;
+    padding: 3px 10px; /* Thu nhỏ ribbon */
+    font-size: 10px;    /* Giảm kích thước chữ */
+    font-weight: bold;
+    border-radius: 0 0 5px 5px; /* Bo góc cho ribbon để tạo hiệu ứng mềm mại */
+    z-index: 10; /* Đảm bảo ribbon nằm trên các phần tử khác */
+}
+
+        
+        .choose-order .product-list.scrollable {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); /* 4 products per row */
+            gap: 20px;
+            /* Remove overflow-x to allow vertical scrolling */
+        }
+
+        .order-list-item {
+            position: relative;
+            margin-bottom: 10px;
+            padding: 10px;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between; /* Ensures the content is distributed */
+        }
+
+        .order-image {
+            margin-right: 10px;
+        }
+
+        .order-quantity, .order-price {
+            margin-left: 10px;
+        }
+
+        /* Center the action container */
+        .action-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: 50%; /* Center horizontally within the item */
+            top: 50%; /* Center vertically within the item */
+            transform: translate(-50%, -50%); /* Adjust to perfect center */
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            gap: 10px; /* Space between the remove button and quantity */
+        }
+
+        .remove-item {
+            background-color: #e74c3c; /* Updated to a more vibrant red */
+            border: none;
+            border-radius: 4px; /* Rounded corners for a softer look */
+            padding: 5px 10px; /* Padding for better fit */
+            color: white;
+            font-size: 12px; /* Adjusted font size for better fit */
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Slightly softer shadow */
+            min-width: 70px; /* Minimum width to fit the text */
+            text-align: center; /* Center text */
+        }
+
+            .remove-item:hover {
+                background-color: #c0392b; /* Darker red on hover */
+            }
+
+        .quantity-input-centered {
+            width: 60px; /* Width to cover the x2 text */
+            padding: 5px;
+            font-size: 14px; /* Adjust font size for better readability */
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            display: none; /* Hidden by default */
+        }
+
+        /* Hover Effects */
+        .order-list-item:hover {
+            background-color: rgba(0, 0, 0, 0.05); /* Faded background on hover */
+        }
+
+            .order-list-item:hover .action-container {
+                opacity: 1; /* Make action-container visible */
+                pointer-events: auto;
+            }
+
+            .order-list-item:hover .quantity-input-centered {
+                display: block; /* Show input field on hover */
+            }
+        .original-price {
+            color: #888; /* Grey out the original price */
+            margin-right: 10px;
+        }
+
+        .discounted-price {
+            color: #e74c3c; /* Red color for the discounted price */
+            font-weight: bold;
+        }
+
+        .price {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="https://res.cloudinary.com/dnmsyzmjf/image/upload/v1728200533/dfkeu86n4s2lkgsudyqi.jpg" style="margin-left:70px; width:50px;" alt="Logo">
+        </div>
+        <ul class="menu">
+            <li class="active"><a href="#"><i class="fa fa-home" ></i> Home</a></li>
+            <li ><a href="#"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+            <li><a href="#"><i class="fa fa-envelope"></i> Message</a></li>
+            <li><a href="#"><i class='fa fa-cc-mastercard'></i> Bills</a></li>
+            <li><a href="#"><i class="fa fa-cog"></i> Setting</a></li>
+        </ul>
+
+        <div class="logout">
+            <a href="#">Log Out</a>
+        </div>
+    </div>
+    @RenderBody()
+    <div class="order-menu">
+        <h2>Order Menu</h2>
+        <div id="order-list" class="order-list">
+            @foreach (var item in Model.Cart.Items)
+            {
+                <p class="order-list-item">
+                    <span class="order-image">
+                        <img src="@item.Product.Image" alt="@item.Product.Name">
+                    </span>
+                    @item.Product.Name
+                    <span class="order-quantity">x @item.Quantity</span>
+                    <span class="order-price" id="order-price">
+                        @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}",
+                                          item.Product.IsOnSale == true && item.Product.DiscountPercentage > 0
+                                              ? item.Quantity * (item.Product.Price * (1 - (decimal)item.Product.DiscountPercentage / 100))
+                                              : item.Quantity * item.Product.Price)
+                    </span>
+                   
+                    <span class="action-container">
+                        <button class="remove-item" onclick="deleteCart(@item.Product.Product_Id)">Remove</button>
+                        <input type="number" data-product-id="@item.Product.Product_Id" class="quantity-input-centered" value="@item.Quantity" />
+                    </span>
+                </p>
+            }
+        </div>
+        <hr/>
+        <div class="order-summary">
+            <p style="font-weight:bold;">Sub Total <span id="total-price">@String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", Model.Cart.TotalValue)</span></p>
+            
+        </div>
+       
+        <button type="submit" class="order-now">Order Now</button>
+       
+    </div>
+    <script type="text/javascript">
+        function addToCart(Product_Id) {
+            var productId = $(this).data('product-id');
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AddToCart", "Cashier")',
+                data: {
+                    Product_Id: Product_Id
+                },
+                success: function (response) {
+                    if (response.success) {
+                        loadCartItems();
+                    } else {
+                        alert('Error adding product to cart.');
+                    }
+                },
+                error: function () {
+                    alert('Error adding product to cart.');
+                }
+            });
+            }
+        function loadCartItems() {
+            $.ajax({
+                url: '@Url.Action("Index", "Cashier")',
+                type: 'GET',
+                success: function(data) {
+                    // Giả sử phần HTML chứa giỏ hàng là #order-list
+                    var newContent = $(data).find('#order-list').html();
+                    $('#order-list').html(newContent);
+
+                    // Tính tổng giá trị giỏ hàng
+                    var totalValue = 0;
+                    $('#order-list .order-list-item').each(function() {
+                        var priceText = $(this).find('.order-price').text().replace(/[^0-9]/g, '');
+                        var quantityText = $(this).find('.order-quantity').text().replace(/[^0-9]/g, '');
+                        var price = parseFloat(priceText);
+                        var quantity = parseInt(quantityText);
+
+                        totalValue += price * quantity;
+                    });
+
+                    // Định dạng và hiển thị tổng giá
+                    $('#total-price').text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(totalValue));
+                },
+                error: function(xhr, status, error) {
+                    console.error('Failed to load cart items:', error);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            loadCartItems();
+
+        });
+        $(document).ready(function () {
+            // Handle quantity change event
+            $(document).on("change", ".quantity-input-centered", function () {
+                var productId = $(this).data("product-id");
+                var newQuantity = $(this).val();
+
+                $.ajax({
+                    url: '@Url.Action("UpdateCart", "Cashier")',
+                    type: 'POST',
+                    data: {
+                        productId: productId,
+                        quantity: newQuantity
+                    },
+                    success: function (response) {
+                        // Update the cart items HTML
+                        loadCartItems();
+                        $('#order-price').text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(response.itemTotalPrice));
+                    },
+                    error: function () {
+                        alert("Error updating quantity.");
+                    }
+                });
+            });
+        });
+        function deleteCart(productId) {
+            $.ajax({
+                url: '@Url.Action("DeleteCart", "Cashier")',
+                type: 'POST',
+                data: { productId: productId },
+                success: function(response) {
+                    if (response.success) {
+
+                        loadCartItems();
+
+                        // Cập nhật tổng giá trị
+                        $('#total-price').text(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(response.totalPrice));
+                    } else {
+                        alert('Failed to remove product: ' + response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Failed to delete cart item:', error);
+                }
+            });
+        }
+        $(document).ready(function () {
+            $('.order-now').click(function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: '@Url.Action("PrintOrder", "Cashier")',
+                    type: 'POST',
+                    xhrFields: {
+                        responseType: 'blob' // Nhận phản hồi dưới dạng Blob
+                    },
+                    success: function (data, status, xhr) {
+                        var blob = new Blob([data], { type: 'application/pdf' });
+                        var link = document.createElement('a');
+                        loadCartItems();
+                        link.href = window.URL.createObjectURL(blob);
+                        link.download = 'OrderInvoice.pdf'; // Tên file tải xuống
+                        link.click(); // Tự động kích hoạt tải xuống
+                    },
+                    error: function () {
+                        alert("There was an error generating the PDF.");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,408 @@
+﻿body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    margin: 0;
+    background-color: #2a2f36;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.logo img {
+    width: 40px;
+    margin-bottom: 20px;
+}
+
+.menu {
+    list-style: none;
+    padding: 0;
+    flex-grow: 1; /* Để các mục menu chiếm hết không gian còn lại */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Căn đều các mục từ logo đến logout */
+}
+
+    .menu li {
+        margin: 10px 0;
+    }
+
+        .menu li a {
+            color: #333;
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+            .menu li.active a,
+            .menu li a:hover {
+                background-color: #ff4477;
+                color: #fff;
+            }
+
+.logout a {
+    color: #ff4477;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+}
+
+.main-content {
+    flex: 1;
+    background-color: #f4f4f4;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.menu-category {
+    margin-bottom: 20px;
+    position: relative; /* Relative positioning to allow absolute positioning of the search box */
+}
+
+    .menu-category h2 {
+        margin-bottom: 10px;
+        font-size: 20px;
+    }
+
+    .menu-category input[type="text"] {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 250px;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+.category-list {
+    margin-top: 50px; /* Adjust space between the search box and the categories */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-height: 70px; /* Adjust height as needed */
+    overflow-y: auto;
+}
+
+.category-item {
+    background-color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    flex-shrink: 0; /* Prevent shrinking */
+    width: calc(20% - 20px); /* Adjust width based on the number of items per row */
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+    .category-item.active {
+        background-color: #ff4477;
+        color: #fff;
+    }
+
+/* Custom scrollbar */
+.category-list::-webkit-scrollbar {
+    width: 10px;
+}
+
+.category-list::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 5px;
+}
+
+    .category-list::-webkit-scrollbar-thumb:hover {
+        background-color: #aaa;
+    }
+
+
+
+input[type="text"] {
+    padding: 10px;
+    width: calc(100% - 20px); /* Giảm chiều rộng để căn đều hai bên */
+    margin: 20px 10px 0 10px; /* Khoảng cách đều hai bên */
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.order-section {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    flex-grow: 1; /* Để phần order chiếm hết không gian còn lại */
+}
+
+.order-grid,
+.recent-grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(5, 1fr);
+    flex-grow: 1; /* Để các phần lưới chiếm hết không gian */
+}
+
+.order-menu {
+    width: 300px;
+    background-color: #fff;
+    padding: 20px;
+    border-left: 1px solid #ccc;
+}
+
+.order-menu h2 {
+    margin: 0 0 20px;
+}
+
+.order-list {
+    margin-bottom: 20px;
+}
+.order-list p {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+}
+
+p img {
+    width: 10px; /* Set the desired width */
+    height: 10px; /* Maintain aspect ratio */
+}
+
+
+.order-details {
+    flex-grow: 1;
+    padding-left: 10px;
+}
+
+.order-quantity, .order-price {
+    padding-left: 20px;
+}
+
+    .order-price p {
+        font-weight: bold;
+        color: #000;
+    }
+
+.order-image img {
+    width: 35px;
+    height: 35px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.order-list-item {
+    position: relative;
+    margin-bottom: 10px;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Ensures the content is distributed */
+}
+
+.order-image {
+    margin-right: 10px;
+}
+
+.order-quantity, .order-price {
+    margin-left: 10px;
+}
+
+/* Center the action container */
+.action-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 50%; /* Center horizontally within the item */
+    top: 50%; /* Center vertically within the item */
+    transform: translate(-50%, -50%); /* Adjust to perfect center */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    gap: 10px; /* Space between the remove button and quantity */
+}
+
+.remove-item {
+    background-color: #e74c3c; /* Updated to a more vibrant red */
+    border: none;
+    border-radius: 4px; /* Rounded corners for a softer look */
+    padding: 5px 10px; /* Padding for better fit */
+    color: white;
+    font-size: 12px; /* Adjusted font size for better fit */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Slightly softer shadow */
+    min-width: 70px; /* Minimum width to fit the text */
+    text-align: center; /* Center text */
+}
+
+    .remove-item:hover {
+        background-color: #c0392b; /* Darker red on hover */
+    }
+
+.quantity-input-centered {
+    width: 60px; /* Width to cover the x2 text */
+    padding: 5px;
+    font-size: 14px; /* Adjust font size for better readability */
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: none; /* Hidden by default */
+}
+
+/* Hover Effects */
+.order-list-item:hover {
+    background-color: rgba(0, 0, 0, 0.05); /* Faded background on hover */
+}
+
+    .order-list-item:hover .action-container {
+        opacity: 1; /* Make action-container visible */
+        pointer-events: auto;
+    }
+
+    .order-list-item:hover .quantity-input-centered {
+        display: block; /* Show input field on hover */
+    }
+
+.order-summary {
+    margin-bottom: 20px;
+}
+
+    .order-summary p {
+        display: flex;
+        justify-content: space-between;
+    }
+
+.order-now {
+    background-color: #ff4477;
+    color: #fff;
+    border: none;
+    padding: 15px;
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Container for the choose-order section */
+.choose-order-container {
+    max-width: 100%;
+    overflow-x: auto;
+    padding-bottom: 10px; /* To avoid scroll bar overlap */
+}
+
+/* Choose-order grid */
+.choose-order {
+    position: relative;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap; /* Allows wrapping to a new line */
+}
+
+/* Individual product style */
+.product {
+    flex: 0 0 calc(25% - 20px); /* 4 products per row with space between */
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+    /* Image inside each product */
+    .product img {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+    }
+
+/* New label on product */
+.new-label {
+    background-color: #ff4477;
+    color: #fff;
+    font-size: 12px;
+    padding: 2px 5px;
+    border-radius: 5px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+/* Product name styling */
+.product p {
+    margin: 10px 0;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Product price styling */
+.product span {
+    color: #ff4477;
+    font-weight: bold;
+}
+
+.choose-order-container {
+    max-height: 400px; /* Set a height to enable vertical scrolling */
+    overflow-y: auto;
+    padding-bottom: 10px; /* To avoid scroll bar overlap */
+}
+
+
+
+.choose-order .product {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+    .choose-order .product img {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+    }
+
+.new-label {
+    background-color: #ff4477;
+    color: #fff;
+    font-size: 12px;
+    padding: 2px 5px;
+    border-radius: 5px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.choose-order .product p {
+    margin: 10px 0;
+    font-weight: bold;
+    color: #333;
+}
+
+.choose-order .product span {
+    color: #ff4477;
+    font-weight: bold;
+}
+
+/* Customize scrollbar for better appearance */
+.choose-order-container::-webkit-scrollbar {
+    width: 10px;
+}
+
+.choose-order-container::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 5px;
+}
+
+    .choose-order-container::-webkit-scrollbar-thumb:hover {
+        background-color: #aaa;
+    }

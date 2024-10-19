@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "_CartItems";
+    Layout = "~/Views/Shared/LayoutCashier.cshtml";
+}
+@using DepartMentStore.Models
+@model ProductCart
+@foreach (var item in Model.Cart.Items)
+{
+    <p class="order-list-item">
+        <span class="order-image">
+            <img src="@item.Product.Image" alt="@item.Product.Name">
+        </span>
+        @item.Product.Name
+        <span class="order-quantity">x @item.Quantity</span>
+        <span class="order-price">
+            @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", item.Product.Price)
+        </span>
+        <button class="remove-item">Remove</button>
+    </p>
+}
+

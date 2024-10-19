@@ -1,0 +1,126 @@
+﻿@using DepartMentStore.Models
+@{
+    User kh = (User)Session["User"];
+    @model Cart
+}
+
+@{
+    ViewBag.Title = "DatHang";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- breadcrumb-section -->
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>Fresh and Organic</p>
+                    <h1>Check Out Product</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end breadcrumb section -->
+<!-- check out section -->
+<form action="/ListCart/DatHang" method="post">
+    <div class="checkout-section mt-150 mb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="checkout-accordion-wrap">
+                        <div class="accordion" id="accordionExample">
+                            <div class="card single-accordion">
+                                <div class="card-header" id="headingOne">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            Thông tin khách hàng
+                                        </button>
+                                    </h5>
+                                </div>
+
+                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        <div class="billing-address-form">
+                                            <form action="index.html">
+                                                <p>@kh.Name</p>
+                                                <p>@kh.Email</p>
+                                                <p>@kh.Address</p>
+
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-4 order-btn-wrap">
+                    <div class="order-details-wrap">
+                        <table class="order-details">
+                            <thead>
+                                <tr>
+                                    <th colspan="3">Your order Details</th>
+
+                                </tr>
+                            </thead>
+                            <tbody class="order-details-body">
+                                <tr>
+                                    <td><strong>Product </strong></td>
+                                    <td><strong>Quantity</strong></td>
+                                    <td><strong>Price</strong></td>
+                                </tr>
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr>
+                                        <td>@item.Product.Name</td>
+                                        <td>@item.Quantity</td>
+                                        @if (item.Product.IsOnSale == true)
+                                        {
+                                            var SalePrice = item.Product.Price * (1 - item.Product.DiscountPercentage);
+                                            <td>@SalePrice</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@item.Product.Price</td>
+                                        }
+
+                                    </tr>
+                                }
+
+
+                            </tbody>
+                            <tbody class="checkout-details">
+                                <tr>
+                                    <td>Coupon</td>
+                                    <td colspan="2">@ViewBag.Coupon</td>
+
+                                </tr>
+                                <tr>
+                                    <td>Total</td>
+                                    <td>@Model.GetTotalItems()</td>
+                                    <td>@Model.TotalValue</td>
+                                </tr>
+                                <tr>
+                                    <td>Total after discount</td>
+                                    <td colspan="2">@ViewBag.TotalValueAfterDiscount</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="col-lg-4 order-btn-wrap">
+                        <input type="submit" value="Xác nhận đơn hàng" class="boxed-btn mt-4">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- end check out section -->

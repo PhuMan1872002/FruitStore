@@ -1,0 +1,104 @@
+﻿@model IEnumerable<DepartMentStore.Models.OrderDetail>
+@{
+    ViewBag.Title = "ListProducts";
+    Layout = "~/Views/Shared/LayoutAdmin.cshtml";
+}
+<head>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center; /* Giúp căn giữa bảng */
+        }
+
+        .content {
+            width: 80%; /* Điều chỉnh chiều rộng của bảng */
+        }
+
+        .table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0 auto; /* Căn giữa bảng */
+        }
+
+            .table th, .table td {
+                padding: 12px;
+                text-align: center;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .table th {
+                background-color: #f8f8f8; /* Màu nền cho tiêu đề bảng */
+            }
+
+            .table img {
+                max-width: 80px; /* Điều chỉnh kích thước ảnh */
+                height: auto;
+                display: block;
+                margin: 0 auto;
+            }
+
+        /* Tiêu đề đơn hàng */
+        .order-header {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            margin-top: 0;
+        }
+
+        .btn {
+            padding: 5px 8px;
+            font-size: 11px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            width: 70px;
+            height: 30px;
+            text-align: center;
+        }
+
+            .btn a {
+                text-decoration: none;
+                color: white;
+                display: block;
+            }
+    </style>
+</head>
+
+<div class="container">
+    <div class="content">
+        <h2 class="order-header">Thông tin đơn hàng @ViewBag.OrderId</h2> <!-- Căn giữa tiêu đề -->
+
+        <table class="table">
+            <tr>
+                <th>Ảnh sản phẩm</th>
+                <th>Tên sản phẩm</th>
+                <th>Giá bán</th>
+                <th>Số lượng</th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="@item.Product.Image" alt="Product Image" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.Name)
+                    </td>
+                    <td>
+                        @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", @item.UnitPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                </tr>
+            }
+        </table>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="btn btn-block btn-lg btn-gradient-primary">
+                <a href="@Url.Action("ListOrder", "Admin")">Back</a>
+            </button>
+        </div>
+    </div>
+</div>

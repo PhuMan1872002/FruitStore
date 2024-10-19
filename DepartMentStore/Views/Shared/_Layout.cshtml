@@ -1,0 +1,574 @@
+﻿﻿@using DepartMentStore.Models
+@{
+    Layout = null;
+    String role = ViewData["Role"] as String;
+    User u = (User)Session["User"];
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Responsive Bootstrap4 Shop ~/Template, Created by Imran Hossain from https://imransdesign.com/">
+
+    <!-- title -->
+    <title>Cửa hàng bách hóa</title>
+
+    <!-- favicon -->
+    <link rel="shortcut icon" type="image/png" href="~/Template/assets/img/favicon.png">
+    <!-- google font -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="~/Template/assets/css/all.min.css">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="~/Template/assets/bootstrap/css/bootstrap.min.css">
+    <!-- owl carousel -->
+    <link rel="stylesheet" href="~/Template/assets/css/owl.carousel.css">
+    <!-- magnific popup -->
+    <link rel="stylesheet" href="~/Template/assets/css/magnific-popup.css">
+    <!-- animate css -->
+    <link rel="stylesheet" href="~/Template/assets/css/animate.css">
+    <!-- mean menu css -->
+    <link rel="stylesheet" href="~/Template/assets/css/meanmenu.min.css">
+    <!-- main style -->
+    <link rel="stylesheet" href="~/Template/assets/css/main.css">
+    <!-- responsive -->
+    <link rel="stylesheet" href="~/Template/assets/css/responsive.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        .form-control-file {
+            height: 50px;
+        }
+        /* Discount banner styling */
+        .discount-label {
+            position: absolute;
+            background-color: red;
+            color: white;
+            top: 10px;
+            right: 10px;
+            padding: 5px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Original price styling */
+        .original-price {
+            text-decoration: line-through;
+            color: #999;
+            margin-right: 10px;
+        }
+
+        .product-price {
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <!--PreLoader-->
+    <div class="loader">
+        <div class="loader-inner">
+            <div class="circle"></div>
+        </div>
+    </div>
+    <!--PreLoader Ends-->
+    <!-- header -->
+    <div class="top-header-area" id="sticker">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 text-center">
+                    <div class="main-menu-wrap">
+                        <!-- logo -->
+                        <div class="site-logo">
+                            <a href="@Url.Action("Index","Home")">
+                                <img src="~/Template/assets/img/logo.png" alt="">
+                            </a>
+                        </div>
+                        <!-- logo -->
+                        <!-- menu start -->
+                        <nav class="main-menu">
+                            <ul>
+                                <li class="current-list-item">
+                                    <a href="@Url.Action("Index","Home")">Home</a>
+                                    
+                                </li>
+                                <li><a href="about.html">About</a></li>
+                                @*<li>
+            <a href="#">Pages</a>
+            <ul class="sub-menu">
+                <li><a href="~/Template/404.html">404 page</a></li>
+                <li><a href="~/Template/about.html">About</a></li>
+                <li><a href="~/Template/cart.html">Cart</a></li>
+                <li><a href="~/Template/checkout.html">Check Out</a></li>
+                <li><a href="@Url.Action("Contact","Home")">Contact</a></li>
+
+                <li><a href="@Url.Action("Shop","Home")">Shop</a></li>
+            </ul>
+        </li>*@
+                                <li>
+                                    <a href="@Url.Action("Coupon","Home")">Coupon</a>
+                                </li>
+                                <li><a href="@Url.Action("Order","Home")">Order</a></li>
+                                <li>
+                                    <a href="@Url.Action("Contact","Home")">Contact</a>
+                                </li>
+                                @if (Session["Role"] != null)
+                                 {
+                                    <li>
+                                        <a href="@Url.Action("UserInfo","Home")"class="bi-person">
+                                            <img src="@u.Avartar" width="25" class="rounded-circle"
+                                                 alt="@u.Name" />
+                                            Chào <span class="text-info">@u.Name</span>
+                                        </a>
+                                    </li>
+                                 }
+                                    <li>
+
+                                        <div class="header-icons">
+                                            <a class="shopping-cart" href="@Url.Action("Index", "ListCart")"><i class="fas fa-shopping-cart"> <span id="cart-count">0</span></i></a>
+                                            <a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+                                            @if (Session["Role"] == null)
+                                            {
+                                                <a class="bi-person" href="@Url.Action("Login", "Register")">Log in</a>
+
+
+                                            }
+                                            else
+                                            {
+                                                <a class="bi-person" href="@Url.Action("DangXuat", "Register")">Log out</a>
+                                            }
+
+                                            @*@if (role == "1"|| role == "2"|| role == "3")
+                    {
+                        <a class="bi-person" href="@Url.Action("DangXuat", "Register")">Log out</a>
+                    }*@
+
+                                        </div>
+                                    </li>
+
+                                </ul>
+                        </nav>
+                        <a class="mobile-show search-bar-icon" href="#"><i class="fas fa-search"></i></a>
+                        <div class="mobile-menu"></div>
+                        <!-- menu end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end header -->
+    <!-- search area -->
+    <div class="search-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <span class="close-btn"><i class="fas fa-window-close"></i></span>
+                    <div class="search-bar">
+                        <div class="search-bar-tablecell">
+                            <h3>Search For:</h3>
+                            <input type="text" id="searchInput" placeholder="Keywords">
+                            <button type="submit" onclick="submitSearch()" >Search <i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end search area -->
+
+
+
+    @RenderBody()
+
+
+    <!-- logo carousel -->
+    <div class="logo-carousel-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="logo-carousel-inner">
+                        <div class="single-logo-item">
+                            <img src="~/Template/assets/img/company-logos/1.png" alt="">
+                        </div>
+                        <div class="single-logo-item">
+                            <img src="~/Template/assets/img/company-logos/2.png" alt="">
+                        </div>
+                        <div class="single-logo-item">
+                            <img src="~/Template/assets/img/company-logos/3.png" alt="">
+                        </div>
+                        <div class="single-logo-item">
+                            <img src="~/Template/assets/img/company-logos/4.png" alt="">
+                        </div>
+                        <div class="single-logo-item">
+                            <img src="~/Template/assets/img/company-logos/5.png" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end logo carousel -->
+    <!-- footer -->
+    <div class="footer-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6">
+                    <div class="footer-box about-widget">
+                        <h2 class="widget-title">About us</h2>
+                        <p>Ut enim ad minim veniam perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="footer-box get-in-touch">
+                        <h2 class="widget-title">Get in Touch</h2>
+                        <ul>
+                            <li>34/8, East Hukupara, Gifirtok, Sadan.</li>
+                            <li>support@fruitkha.com</li>
+                            <li>+00 111 222 3333</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="footer-box pages">
+                        <h2 class="widget-title">Pages</h2>
+                        <ul>
+                            <li><a href="~/Template/index.html">Home</a></li>
+                            <li><a href="~/Template/about.html">About</a></li>
+                            <li><a href="@Url.Action("Shop","Home")">Shop</a></li>
+                            <li><a href="~/Template/news.html">News</a></li>
+                            <li><a href="@Url.Action("Contact","Home")"">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="footer-box subscribe">
+                        <h2 class="widget-title">Subscribe</h2>
+                        <p>Subscribe to our mailing list to get the latest updates.</p>
+                        <form action="~/Template/index.html">
+                            <input type="email" placeholder="Email">
+                            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end footer -->
+    <!-- copyright -->
+    <div class="copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-12">
+                    <p>
+                        Copyrights &copy; 2019 - <a href="https://imransdesign.com/">Imran Hossain</a>,  All Rights Reserved.<br>
+                        Distributed By - <a href="https://themewagon.com/">Themewagon</a>
+                    </p>
+                </div>
+                <div class="col-lg-6 text-right col-md-12">
+                    <div class="social-icons">
+                        <ul>
+                            <li><a href="#" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+                            <li><a href="#" target="_blank"><i class="fab fa-dribbble"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end copyright -->
+    <!-- jquery -->
+    <script src="~/Template/assets/js/jquery-1.11.3.min.js"></script>
+    <!-- bootstrap -->
+    <script src="~/Template/assets/bootstrap/js/bootstrap.min.js"></script>
+    <!-- count down -->
+    <script src="~/Template/assets/js/jquery.countdown.js"></script>
+    <!-- isotope -->
+    <script src="~/Template/assets/js/jquery.isotope-3.0.6.min.js"></script>
+    <!-- waypoints -->
+    <script src="~/Template/assets/js/waypoints.js"></script>
+    <!-- owl carousel -->
+    <script src="~/Template/assets/js/owl.carousel.min.js"></script>
+    <!-- magnific popup -->
+    <script src="~/Template/assets/js/jquery.magnific-popup.min.js"></script>
+    <!-- mean menu -->
+    <script src="~/Template/assets/js/jquery.meanmenu.min.js"></script>
+    <!-- sticker js -->
+    <script src="~/Template/assets/js/sticker.js"></script>
+    <!-- main js -->
+    <script src="~/Template/assets/js/main.js"></script>
+    <script type="text/javascript">
+        function addToCart(Product_Id,quantity) {
+            var productId = $(this).data('product-id');
+            var quantity = $('#quantity').val();
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("AddToCart", "ListCart")',
+                data: {
+                    Product_Id: Product_Id,
+                    quantity:quantity
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $('#cart-count').text(response.cartCount);
+                        $('#total-price').text(response.TotalPrice);
+                    } else {
+                        alert('Error adding product to cart.');
+                    }
+                },
+                error: function () {
+                    alert('Error adding product to cart.');
+                }
+            });
+        }
+         function loadCartItems() {
+            $.get('@Url.Action("Index", "Cart")', function(data) {
+                $('#cart-items').html($(data).find('#cart-items').html());
+            });
+        }
+
+        $(document).ready(function() {
+            loadCartItems();
+        });
+
+         $(document).ready(function() {
+            // Load initial cart count if needed
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetCartCount", "ListCart")',
+                success: function(response) {
+                    $('#cart-count').text(response.cartCount);
+                    $('#total-price').text(response.TotalPrice);
+                }
+            });
+         });
+        $('.remove-item').on('click', function () {
+            var productId = $(this).data('product-id');
+            var $row = $(this).closest('.table-body-row');
+
+            $.post('/ListCart/DeleteCart', { productId: productId }, function (data) {
+                $row.remove();
+                updateCartIcon(data.totalItems, data.TotalPrice);
+                updateProductTotal($row, data.itemTotalPrice, data.TotalPrice);
+            });
+            function updateCartIcon(totalItems, TotalPrice) {
+                $('#cart-count').text(totalItems);
+                $('#total-price').text(TotalPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));
+
+            }
+            function updateProductTotal(row, itemTotalPrice, TotalPrice) {
+                row.find('.product-total').text(itemTotalPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));
+                $('#total-price').text(TotalPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));
+            }
+        });
+        $(document).ready(function () {
+            $('.quantity-input').on('change', function () {
+                var $row = $(this).closest('.table-body-row');
+                var productId = $(this).data('product-id');
+                var quantity = $(this).val();
+                $.post('/ListCart/UpdateCart', { productId: productId, quantity: quantity }, function (data) {
+                    updateCartIcon(data.totalItems,data.TotalPrice);
+                    updateProductTotal($row, data.itemTotalPrice,data.TotalPrice);
+
+                });
+            });
+
+            function updateCartIcon(totalItems,TotalPrice) {
+                $('#cart-count').text(totalItems);
+                $('#total-price').text(TotalPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));
+
+            }
+            function updateProductTotal(row, itemTotalPrice,TotalPrice) {
+                row.find('.product-total').text(itemTotalPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));
+                $('#total-price').text(TotalPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));
+            }
+        });
+        @*$(document).ready(function() {
+            $('#loginForm').submit(function(event) {
+                event.preventDefault();
+
+                $.ajax({
+                    url: '@Url.Action("Login", "Register")',
+                    type: 'POST',
+                    data: {
+                        email: $('#email').val(),
+                        password: $('#password').val()
+
+                        returnUrl: '@Request.QueryString["ReturnUrl"]' // Get returnUrl if available
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            window.location.href = response.returnUrl;
+                        } else {
+                            $('#error-message').text(response.message); // Hiển thị thông báo lỗi
+                        }
+                    }
+                });
+            });
+        });*@
+        $(document).ready(function () {
+            $('#loginForm').on('submit', function (e) {
+                    e.preventDefault();
+
+                    $.ajax({
+                        url: '@Url.Action("Login", "Register")',
+                        type: 'POST',
+                        data: {
+                            email: $('#email').val(),
+                            password: $('#password').val(),
+                            returnUrl: '@Request.QueryString["ReturnUrl"]' // Get returnUrl if available
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                // Điều hướng người dùng đến trang mong muốn
+                                window.location.href = response.returnUrl;
+                            } else {
+                                $('#error-message').text(response.message);  // Hiển thị lỗi nếu đăng nhập không thành công
+                            }
+                        },
+                        error: function () {
+                            alert("An error occurred during login.");
+                        }
+                    });
+                });
+        });
+        $(document).ready(function () {
+            $('#registerForm').on('submit', function (e) {
+                    e.preventDefault();
+                    // Tạo FormData object để chứa dữ liệu form
+                    var formData = new FormData();
+
+                    // Thêm các trường dữ liệu từ form vào FormData
+                    formData.append('email', $('#email').val());
+                    formData.append('password', $('#password').val());
+                    formData.append('rePassword', $('#rePassword').val());
+                    formData.append('name', $('#name').val());
+                    formData.append('address', $('#address').val());
+
+                    // Thêm tệp ảnh vào FormData
+                    var avatarFile = document.getElementById('avatar').files[0];
+                    formData.append('avatar', avatarFile); // Thêm file vào FormData
+
+                    $.ajax({
+                        url: '@Url.Action("Register", "Register")',
+                        type: 'POST',
+                        data: formData,
+                        processData: false, // Không xử lý dữ liệu vì đây là FormData
+                        contentType: false, // Không thiết lập kiểu nội dung vì FormData tự động xử lý
+                        success: function (response) {
+                            if (response.success) {
+                                window.location.href = response.returnUrl;;
+                                
+
+                            } else {
+                                alert(response.message);  // Hiển thị lỗi nếu đăng nhập không thành công
+                            }
+                        },
+                        error: function () {
+                            alert("An error occurred during register.");
+                        }
+                    });
+                });
+            });
+        function submitSearch() {
+            var input = document.getElementById('searchInput').value;
+            var url = '@Url.Action("Index", "Home")?searchString=' + encodeURIComponent(input);
+            window.location.href = url;
+        }
+        function submitForm() {
+            $.ajax({
+                url: '@Url.Action("SendEmail", "Home")',
+                type: 'POST',
+                data: $('#fruitkha-contact').serialize(),
+                success: function (response) {
+                    alert(response.message);
+                },
+                error: function () {
+                    alert('An error occurred. Please try again.');
+                }
+            });
+        }
+        $(document).ready(function () {
+            // Handle form submission for adding a comment
+            $('#commentForm').submit(function (e) {
+                e.preventDefault(); // Prevent default form submission
+                var commentContent = $('#commentContent').val(); // Get comment content
+                var productId = $('#ProductId').val(); // Get the value from the hidden input
+
+                // Submit comment via AJAX
+                $.ajax({
+                    url: '@Url.Action("Comment", "Home")', // Controller action for adding comment
+                    type: 'POST',
+                    data: {
+                        productId: productId,
+                        content: commentContent,
+                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val() // Anti-forgery token
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            // Append the new comment dynamically
+                            var newCommentHtml = `
+                                <div class="single-comment-body">
+                                    <div class="comment-user-avater">
+                                        <img src="${response.user.avatar}" alt="">
+                                    </div>
+                                    <div class="comment-text-body">
+                                        <h4>${response.user.name}
+                                            <span class="comment-date">${response.dateCreate}</span>
+                                            <a href="#">reply</a>
+                                        </h4>
+                                        <p>${response.content}</p>
+                                    </div>
+                                </div>`;
+
+                            $('#comment-list').append(newCommentHtml); // Append to the comment list
+                            $('#commentContent').val(''); // Clear the input field after submission
+                        } else {
+                            alert('Failed to add comment');
+                        }
+                    },
+                    error: function () {
+                        alert('Error occurred while adding the comment');
+                    }
+                });
+            });
+        });
+         $(document).ready(function () {
+        // Xử lý sự kiện submit của form mã giảm giá
+            $('#coupon-form').submit(function (event) {
+                event.preventDefault(); // Ngăn không reload lại trang
+
+                var couponCode = $('#coupon-code').val(); // Lấy giá trị mã giảm giá từ input
+                $('#coupon-code').val('');
+                // Gửi yêu cầu AJAX
+                $.ajax({
+                    url: '@Url.Action("ApplyCoupon", "ListCart")', // Đường dẫn đến action
+                    type: 'POST',
+                    data: { couponCode: couponCode }, // Gửi mã giảm giá đến server
+                    success: function (response) {
+                        if (response.success) {
+                            // Nếu mã giảm giá hợp lệ, cập nhật giá trị trên giao diện
+                            $('#applied-coupon').text(response.coupon);
+                            $('#original-price').html('<span style="text-decoration:line-through;">' + formatCurrency(response.originalPrice) + '</span>');
+                            $('#discount-amount').text(response.discountAmount+'%');
+                            $('#total-after-discount').text(formatCurrency(response.totalAfterDiscount));
+                        } else {
+                            alert(response.message); // Thông báo lỗi nếu mã không hợp lệ
+                        }
+                    }
+                });
+            });
+
+            // Hàm định dạng tiền tệ (định dạng theo kiểu Việt Nam)
+            function formatCurrency(value) {
+                return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+            }
+        });
+    </script>
+</body>
+</html>

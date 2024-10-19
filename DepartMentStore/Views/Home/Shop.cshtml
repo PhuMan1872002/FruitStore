@@ -1,0 +1,53 @@
+﻿
+@{
+    Layout = "~/Views/Shared/LayoutShop.cshtml";
+}
+﻿@using PagedList.Mvc
+@model PagedList.PagedList<DepartMentStore.Models.Product>
+
+<div class="product-section mt-150 mb-150">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-filters">
+                    @{
+                        DepartMentStore.Models.DepartmentStoreEntities da = new DepartMentStore.Models.DepartmentStoreEntities();
+                        var Category = da.Categories.ToList();
+                        <ul>
+                            @foreach (var item in Category)
+                            {
+                                <li data-filter=".strawberry"><a href="@Url.Action("ProductType", new { @id=@item.Cate_id })">@item.Name</a></li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="row product-lists">
+            @foreach (var item in Model)
+            {
+                <div class="col-lg-4 col-md-6 text-center strawberry">
+                    <div class="single-product-item">
+                        <div class="product-image" >
+                            <a href="@Url.Action("ProductDetail",new { @id=item.Product_Id})"><img src="@item.Image" alt=""></a>
+                        </div>
+                        <h3>@item.Name</h3>
+                        <p class="product-price"><span>Per Kg</span> @item.Price </p>
+                        <!--<a href="cart.html" class="cart-btn">-->@*<i class="fas fa-shopping-cart"></i> Add to Cart*@<!--</a>-->
+                    </div>
+                </div>
+            }
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="pagination-wrap">
+                    @Html.PagedListPager(Model, page => Url.Action("Shop", new { page = page }))
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

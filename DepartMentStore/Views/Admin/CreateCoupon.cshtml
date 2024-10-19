@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewBag.Title = "CreateProduct";
+    Layout = "~/Views/Shared/LayoutCreateProduct.cshtml";
+
+}
+
+<div class="container">
+    <div class="title">Thêm mã giảm giá</div>
+    <form action="/Admin/CreateCoupon" id="CouponForm" method="post" new { enctype="multipart/form-data" }>
+        <div class="user__details">
+            <div class="input__box">
+                <span class="details">Mã giảm giá</span>
+                <input type="text" name="CouponCode" id="CouponCode" placeholder="Mã giảm giá" required>
+                <p style="color:red">@ViewBag.SameCoupon</p>
+            </div>
+            <div class="input__box">
+                <span class="details">Phần trăm giảm giá</span>
+                <input type="number" name="DiscountPercentage" placeholder="Giá" min="1" max="100" required>
+            </div>
+            <div class="input__box">
+                <span class="details">Trạng thái</span>
+                <input type="checkbox" name="Status" required>
+            </div>
+            <div class="input__box">
+                <span class="details">Mô tả</span>
+                <input type="text" name="Description" placeholder="Số lượng" required>
+            </div>
+            <div class="input__box">
+                <span class="details">Ngày hết hạn</span>
+                <input type="date" id="selectedDate" name="ExpireDate" />
+            </div>
+
+        </div>
+        <div class="input__box">
+            <span class="details">Ảnh mô tả</span>
+            <input type="file" name="ImageUpload" required />
+
+
+        </div>
+
+
+
+        <div class="button">
+            <input type="submit" value="Save">
+        </div>
+
+    </form>
+</div>
+

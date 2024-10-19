@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewBag.Title = "CreateProduct";
+    Layout = "~/Views/Shared/LayoutCreateProduct.cshtml";
+   
+}
+
+<div class="container">
+    <div class="title">Thêm sản phẩm</div>
+    <form action="/Admin/CreateProduct" method="post" new { enctype="multipart/form-data" }>
+        <div class="user__details">
+            <div class="input__box">
+                <span class="details"> Tên sản phẩm</span>
+                <input type="text" name="TenSP" placeholder="Tên Sản Phẩm" required>
+            </div>
+            <div class="input__box">
+                <span class="details">Giá bán</span>
+                <input type="number" name="GiaBan" placeholder="Giá" required>
+            </div>
+            <div class="input__box">
+                <span class="details">Mô tả</span>
+                <input type="text" name="Description" placeholder="Mô tả" required>
+            </div>
+
+            <div class="input__box">
+                <span class="details">Số lượng</span>
+                <input type="text" name="SL" placeholder="Số lượng" required>
+            </div>
+
+            <div class="input__box">
+                <span class="details">Tên loại sản phẩm</span>
+                @Html.DropDownList("LSP")
+            </div>
+
+        </div>
+        <div class="input__box">
+            <span class="details">Ảnh sản phẩm</span>
+            <input type="file" name="ImageUpload" required />
+
+
+        </div>
+
+
+
+        <div class="button">
+            <input type="submit" value="Save">
+        </div>
+    
+    </form>
+    </div>
+

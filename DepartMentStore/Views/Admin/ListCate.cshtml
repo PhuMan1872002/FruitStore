@@ -1,0 +1,116 @@
+﻿@model IEnumerable<DepartMentStore.Models.Category>
+
+@{
+    ViewBag.Title = "ListCate";
+    Layout = "~/Views/Shared/LayoutAdmin.cshtml";
+}
+<head>
+    <style>
+        .table {
+            border-collapse: collapse;
+            width: 80%;
+            height: 100px;
+        }
+
+            .table th, .table td {
+                padding: 8px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+                line-height: 1.5;
+                height: 10%;
+            }
+
+            .table tr:hover {
+                background-color: #f5f5f5;
+            }
+            .table th {
+                background-color: #f8f8f8; /* Màu nền cho tiêu đề bảng */
+            }
+            /* Điều chỉnh kích thước của các cột */
+            .table th:first-child,
+            .table td:first-child,
+            .table th:nth-child(2),
+            .table td:nth-child(2),
+            .table th:last-child,
+            .table td:last-child {
+                height: 20%;
+                width: 20%; /* Điều chỉnh kích thước của cột */
+            }
+            .table tr:last-child td {
+                border-bottom: none; /* Loại bỏ đường gạch ngang của dòng cuối cùng */
+            }
+        /* Điều chỉnh kích thước và kiểu chữ của nút button */
+        .btn {
+            padding: 5px 8px; /* Adjust padding of the button */
+            font-size: 11px; /* Adjust font size of the button */
+            margin-bottom: 5px;
+            border-radius: 5px;
+            display: inline-block; /* Make the buttons inline-block */
+            width: 70px; /* Set a fixed width for both buttons */
+            height: 30px;
+            text-align: center; /* Center the text horizontally */
+        }
+
+        .edit-btn {
+            background-color: blue;
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: red;
+            color: white;
+        }
+
+        .btn a {
+            text-decoration: none;
+            color: white;
+            display: inline-block; /* Ensure <a> tag takes up the full width of the button */
+            width: 100%; /* Ensure the <a> tag takes up the full width of the button */
+        }
+
+        .CanGiua {
+            margin-left: 40px;
+        }
+    </style>
+</head>
+<table class="table CanGiua">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Cate_id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cate_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                <button class="btn edit-btn">
+                    <a href="@Url.Action("EditCate", "Admin", new { id = item.Cate_id })"> Edit</a>
+
+                </button>
+                <button class="btn delete-btn">
+                    <a href="@Url.Action("DeleteCate", "Admin", new { id = item.Cate_id })"> Delete</a>
+
+                </button>
+            </td>
+        </tr>
+    }
+    <tr>
+        <td>
+            <button class="btn btn-block btn-lg btn-gradient-primary mt-4">
+                <a href="@Url.Action("CreateCate", "Admin")"> Add</a>
+
+            </button>
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,104 @@
+﻿@{
+    ViewBag.Title = "ListCarts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using DepartMentStore.Models
+@model List<CartModel>
+<!-- breadcrumb-section -->
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>Fresh and Organic</p>
+                    <h1>Cart</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end breadcrumb section -->
+<!-- cart -->
+<div class="cart-section mt-150 mb-150">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-12">
+                <div class="cart-table-wrap">
+                    <table class="cart-table">
+                        <thead class="cart-table-head">
+                            <tr class="table-head-row">
+                                <th class="product-remove"></th>
+                                <th class="product-image">Product Image</th>
+                                <th class="product-name">Name</th>
+                                <th class="product-price">Price</th>
+                                <th class="product-quantity">Quantity</th>
+                                <th class="product-total">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr class="table-body-row">
+                                    <td class="product-remove"><a href="@Url.Action("XoaGioHang",new { @id=item.Product.Product_Id})"><i class="far fa-window-close"></i></a></td>
+                                    <td class="product-image"><img src="@item.Product.Image" alt="CC"></td>
+                                    <td class="product-name">@item.Product.Name</td>
+                                    <td class="product-price"> @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", @item.Product.Price)</td>
+                                    <td class="product-quantity">
+                                        <form action="@Url.Action("UpdateCart")" method="get">
+                                            <input type="hidden" name="ProductID" value="@item.Product.Product_Id" />
+                                            <input type="number" min="1" step="1" name="Quantity" value="@item.Quantity" />
+                                            <button type="submit" class="btn btn-primary btn-sm"> Cập nhật </button>
+                                        </form>
+                                        @*<input type="number" onblur="@Url.Action("UpdateCart",new { @ProductID=item.ProductID})" name="Quantity" value="@item.Quantity" placeholder="0">*@
+                                    </td>
+                                    <td class="product-total"></td>
+                                </tr>
+                            }
+                            
+
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="total-section">
+                    <table class="total-table">
+                        <thead class="total-table-head">
+                            <tr class="table-total-row">
+                                <th>Total</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="total-data">
+                                <td><strong>Subtotal: </strong></td>
+                                <td> @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", ViewBag.TongTien)</td>
+                            </tr>
+                            <tr class="total-data">
+                                <td><strong>Total Quantity: </strong></td>
+                                <td>@ViewBag.TongSoLuong</td>
+                            </tr>
+                           
+                        </tbody>
+                    </table>
+                    <div class="cart-buttons">
+                        <a href="@Url.Action("DatHang")" class="boxed-btn black">Check Out</a>
+                    </div>
+                </div>
+
+                <div class="coupon-section">
+                    <h3>Apply Coupon</h3>
+                    <div class="coupon-form-wrap">
+                        <form action="index.html">
+                            <p><input type="text" placeholder="Coupon"></p>
+                            <p><input type="submit" value="Apply"></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end cart -->

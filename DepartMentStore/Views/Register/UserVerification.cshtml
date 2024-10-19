@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "User Verification";
+    Layout = "~/Views/Shared/LayoutShop.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-warning text-white text-center">
+                    <h2>User Verification Process</h2>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-danger" role="alert">
+                        <strong>Message: </strong> @ViewBag.Message<br />
+                        Please click here to <a href="@Url.Action("Login", "Register")" class="alert-link">Login</a>.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .container {
+        margin-top: 50px;
+    }
+
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .card-header {
+        border-radius: 10px 10px 0 0;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+</style>

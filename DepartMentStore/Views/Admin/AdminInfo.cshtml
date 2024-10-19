@@ -1,0 +1,124 @@
+﻿@{
+    ViewBag.Title = "ListProducts";
+    Layout = "~/Views/Shared/LayoutAdmin.cshtml";
+    DepartMentStore.Models.User u = (DepartMentStore.Models.User)Session["User"];
+}
+<head>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center; /* Giúp căn giữa bảng */
+        }
+
+        .content {
+            width: 80%; /* Điều chỉnh chiều rộng của bảng */
+        }
+
+        .table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0 auto; /* Căn giữa bảng */
+            border: 2px solid #ddd; /* Thêm viền ngoài cho bảng */
+        }
+
+            .table th, .table td {
+                padding: 12px;
+                border: 1px solid #ddd; /* Thêm viền cho các ô */
+                vertical-align: middle; /* Giúp căn giữa theo chiều dọc */
+            }
+
+            .table th {
+                text-align: left; /* Canh trái tiêu đề */
+                background-color: #f8f8f8; /* Màu nền cho tiêu đề bảng */
+                width: 20%; /* Chiều rộng cho cột tiêu đề */
+                padding-right: 10px;
+            }
+
+            .table td {
+                text-align: center; /* Căn giữa thông tin trong cột phải, bao gồm cả hình ảnh */
+            }
+
+            .table img {
+                max-width: 80px; /* Điều chỉnh kích thước ảnh */
+                height: auto;
+                display: block;
+                margin: 0 auto; /* Căn giữa hình ảnh */
+            }
+
+        .order-header {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            margin-top: 0;
+        }
+
+        .btn {
+            padding: 5px 8px;
+            font-size: 11px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            width: 70px;
+            height: 30px;
+            text-align: center;
+        }
+
+            .btn a {
+                text-decoration: none;
+                color: white;
+                display: block;
+            }
+    </style>
+</head>
+
+<div class="container">
+    <div class="content">
+        <h2 class="order-header">Thông tin quản lý</h2>
+
+        <table class="table">
+            <tr>
+                <th>Avatar</th>
+                <td>
+                    <img src="@u.Avartar" alt="Product Image" />
+                </td>
+            </tr>
+            <tr>
+                <th>Họ tên</th>
+                <td>
+                    @u.Name
+                </td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>
+                    @u.Email
+                </td>
+            </tr>
+            <tr>
+                <th>Địa chỉ</th>
+                <td>
+                    @u.Address
+                </td>
+            </tr>
+            <tr>
+                <th>Trạng thái</th>
+                <td>
+                    @if (u.IsLocked == true)
+                    {
+                        <span class="badge badge-danger">Locked</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-success">Normal</span>
+                    }
+                </td>
+            </tr>
+        </table>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="btn btn-block btn-lg btn-gradient-primary">
+                <a href="@Url.Action("Index", "Admin")">Back</a>
+            </button>
+        </div>
+    </div>
+</div>

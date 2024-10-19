@@ -1,0 +1,138 @@
+﻿@{
+    ViewBag.Title = "ListCarts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using DepartMentStore.Models
+@model Cart
+<!-- breadcrumb-section -->
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>Fresh and Organic</p>
+                    <h1>Cart</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end breadcrumb section -->
+<!-- cart -->
+<div class="cart-section mt-150 mb-150">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-md-12">
+                <div class="cart-table-wrap">
+                    <table class="cart-table">
+                        <thead class="cart-table-head">
+                            <tr class="table-head-row">
+                                <th class="product-remove"></th>
+                                <th class="product-image">Product Image</th>
+                                <th class="product-name">Name</th>
+                                <th class="product-price">Price</th>
+                                <th class="product-quantity">Quantity</th>
+                                <th class="product-total">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Items)
+                            {
+                                <tr class="table-body-row">
+                                    <td class="product-remove"><a href="javascript:void(0);" class="remove-item" data-product-id="@item.Product.Product_Id"><i class="far fa-window-close"></i></a></td>
+                                    <td class="product-image"><img src="@item.Product.Image" alt=""></td>
+                                    <td class="product-name">@item.Product.Name</td>
+                                    @if (item.Product.IsOnSale != null)
+                                    {
+                                        if ((bool)item.Product.IsOnSale == true)
+                                        {
+                                            var DiscountPrice = item.Product.Price - item.Product.Price * (@item.Product.DiscountPercentage / 100);
+                                            <td class="product-price">
+                                                @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", DiscountPrice)
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td class="product-price">@item.Product.Price</td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td class="product-price">@item.Product.Price</td>
+                                    }
+                                    <td class="product-quantity">
+                                        <input type="hidden" name="ProductID" value="@item.Product.Product_Id" />
+                                        <input type="number" min="1" step="1" name="Quantity" value="@item.Quantity" data-product-id="@item.Product.Product_Id" class="quantity-input" />
+                                        @*<input type="number" onblur="@Url.Action("UpdateCart",new { @ProductID=item.ProductID})" name="Quantity" value="@item.Quantity" placeholder="0">*@
+                                    </td>
+                                    <td class="product-total">
+                                        @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}",
+                                          item.Product.IsOnSale == true && item.Product.DiscountPercentage > 0
+                                              ? item.Quantity * (item.Product.Price * (1 - (decimal)item.Product.DiscountPercentage / 100))
+                                              : item.Quantity * item.Product.Price)
+                                    </td>
+                                </tr>
+                            }
+
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="total-section">
+                    <table class="total-table">
+                        <thead class="total-table-head">
+                            <tr class="table-total-row">
+                                <th>Total</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="total-data">
+                                <td><strong>Original Price: </strong></td>
+                                <td id="total-price">
+                                    <div id="total-price">
+                                        @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", Model.TotalValue)
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="total-data">
+                                <td><strong>Coupon: </strong></td>
+                                <td id="applied-coupon"></td>
+                            </tr>
+                            <tr class="total-data">
+                                <td><strong>Discount: </strong></td>
+                                <td id="discount-amount"></td>
+                            </tr>
+                            <tr class="total-data">
+                                <td><strong>Total After Discount: </strong></td>
+                                <td id="total-after-discount"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="cart-buttons">
+                        <a href="@Url.Action("DatHang")" class="boxed-btn black">Check Out</a>
+                    </div>
+                </div>
+
+                <div class="coupon-section">
+                    <h3>Apply Coupon</h3>
+                    <div class="coupon-form-wrap">
+                        <form id="coupon-form">
+                            <p><input type="text" id="coupon-code" placeholder="Coupon"></p>
+                            <p><input type="submit" value="Apply"></p>
+                        </form>
+                    </div>
+                </div> 
+               
+            </div>
+
+          
+        </div>
+        </div>
+    </div>
+</div>
+<!-- end cart -->

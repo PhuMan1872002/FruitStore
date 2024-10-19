@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "ListCarts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model DepartMentStore.Models.User
+
+<!-- breadcrumb-section -->
+<div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>Fresh and Organic</p>
+                    <h1>User Information</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end breadcrumb section -->
+<!-- cart -->
+<div class="cart-section mt-150 mb-150">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="cart-table-wrap">
+                    <table class="cart-table">
+                        <tbody>
+                            <tr class="table-body-row">
+                                <td class="product-title"><strong>Email</strong></td>
+                                <td class="product-info">@Model.Email</td>
+                            </tr>
+                            <tr class="table-body-row">
+                                <td class="product-title"><strong>Full Name</strong></td>
+                                <td class="product-info">@Model.Name</td>
+                            </tr>
+                            <tr class="table-body-row">
+                                <td class="product-title"><strong>Address</strong></td>
+                                <td class="product-info">@Model.Address</td>
+                            </tr>
+                            <tr class="table-body-row">
+                                <td class="product-title"><strong>Avatar</strong></td>
+                                <td class="product-info">
+                                    <img src="@Model.Avartar" alt="User Avatar" style="width: 100px; height: 100px;">
+                                </td>
+                            </tr>
+                            <tr class="table-body-row">
+                                <td class="product-title"><strong>Status</strong></td>
+                                <td class="product-info">
+                                    @if (Model.IsLocked == true)
+                                    {
+                                        <span class="badge badge-success">Locked</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-danger">Normal</span>
+                                    }
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end cart -->
